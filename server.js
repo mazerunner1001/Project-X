@@ -59,5 +59,15 @@ app.use(errorHandler);
 
 // Start the server
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`🚀 Server is running on port ${PORT}`);
+}).on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`❌ Port ${PORT} is already in use!`);
+    console.log(`💡 Solutions:`);
+    console.log(`   1. Kill the process: netstat -ano | findstr :${PORT}, then taskkill /PID <PID> /F`);
+    console.log(`   2. Use a different port: Set PORT=5001 in your .env file`);
+    console.log(`   3. Stop other instances of this application`);
+  } else {
+    console.error('❌ Server failed to start:', err);
+  }
 });

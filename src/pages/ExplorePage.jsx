@@ -68,15 +68,16 @@ const ExplorePage = () => {
       <div className="bg-black overflow-y-hidden">
         <NavbarExplore />
         <div className="poster relative">
-          <Carousel
-            showThumbs={false}
-            autoPlay={true}
-            transitionTime={3}
-            infiniteLoop={true}
-            showStatus={false}
-            useKeyboardArrows={true}
-            selectedItem={0}
-          >
+          {popularMovies.length > 0 && (
+            <Carousel
+              showThumbs={false}
+              autoPlay={true}
+              transitionTime={3}
+              infiniteLoop={true}
+              showStatus={false}
+              useKeyboardArrows={true}
+              selectedItem={0}
+            >
             {popularMovies && popularMovies.map(movie => (
               <Link
                 key={movie.id}
@@ -108,6 +109,7 @@ const ExplorePage = () => {
               </Link>
             ))}
           </Carousel>
+          )}
           <div className="relative">
             <MovieSection title="Trending Movies and tv" type="trending" Class="movie" style1="overflow-hidden" style2="overflow-x-scroll  space-x-1 overflow-y-none ml-8 pl-9" />
             <Advertisement

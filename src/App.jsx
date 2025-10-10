@@ -18,6 +18,7 @@ import PrivateRoute from './components/PrivateRoute';
 import CastDetail from "../src/pages/CastDetail";
 import UpdateProfile from "./pages/UpdateProfile";
 import CastPhotos from './pages/CastPhotos';
+import AuthProvider from './components/AuthProvider';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -44,7 +45,7 @@ const router = createBrowserRouter(
 
 const App = () => {
   return (
-    <>
+    <AuthProvider>
       <RouterProvider router={router} />
       <ToastContainer
         toastClassName={styles['toast-container']}
@@ -53,7 +54,7 @@ const App = () => {
         progressClassName={styles['progress-bar']}
         iconClassName={styles['toast-icon']}
       />
-    </>
+    </AuthProvider>
   );
 }
 

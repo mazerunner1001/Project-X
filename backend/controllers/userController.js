@@ -94,11 +94,32 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     user.email = req.body.email || user.email;
     user.bio = req.body.bio || user.bio;
     user.contact = req.body.contact || user.contact;
-    user.profilePicture = req.body.profilePicture || user.profilePicture;
+    
+    // Handle profile picture with validation
+    if (req.body.profilePicture) {
+      // Check if it's a Base64 string
+      if (req.body.profilePicture.startsWith('data:image/')) {
+        // Basic validation for Base64 image
+        const base64Data = req.body.profilePicture.split(',')[1];
+        if (base64Data) {
+          // Check approximate size (Base64 is ~33% larger than original)
+          const sizeInBytes = (base64Data.length * 3) / 4;
+          if (sizeInBytes > 2 * 1024 * 1024) { // 2MB limit
+            res.status(400);
+            throw new Error('Image size too large. Please use an image smaller than 2MB.');
+          }
+          user.profilePicture = req.body.profilePicture;
+        }
+      } else {
+        // If it's not Base64, might be URL or other format
+        user.profilePicture = req.body.profilePicture;
+      }
+    }
+    
     user.socialLinks = {
-      facebook: req.body.socialLinks?.facebook || user.socialLinks.facebook,
-      twitter: req.body.socialLinks?.twitter || user.socialLinks.twitter,
-      linkedin: req.body.socialLinks?.linkedin || user.socialLinks.linkedin,
+      facebook: req.body.socialLinks?.facebook || user.socialLinks?.facebook || '',
+      twitter: req.body.socialLinks?.twitter || user.socialLinks?.twitter || '',
+      linkedin: req.body.socialLinks?.linkedin || user.socialLinks?.linkedin || '',
     };
 
     if (req.body.password) {
